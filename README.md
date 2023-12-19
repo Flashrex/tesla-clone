@@ -1,6 +1,6 @@
 # tesla-clone
-
-This template should help get you started developing with Vue 3 in Vite.
+This is a clone from the official tesla website. (https://www.tesla.com/en_eu)
+It was created using vue 3.
 
 ## Recommended IDE Setup
 
