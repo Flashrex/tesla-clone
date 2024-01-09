@@ -9,15 +9,15 @@ const lastSection = ref(false);
 
 defineExpose({ update })
 
-function update(text, sText, opacity, bText, lSection) {
+function update(data) {
 
     //update text
-    headline.value = text;
-    subtext.value = sText;
-    bottomText.value = bText;
-    lastSection.value = lSection;
+    headline.value = data.text;
+    subtext.value = data.sText;
+    bottomText.value = data.bText;
+    lastSection.value = data.lSection;
 
-    content.value.style.opacity = opacity;
+    content.value.style.opacity = data.opacity;
 }
 
 </script>
@@ -55,18 +55,20 @@ function update(text, sText, opacity, bText, lSection) {
 
 h1 {
     position: fixed;
+    top: 6rem;
     color: rgb(15, 15, 15);
     font-weight: 600;
-    margin-top: 8rem;
-    font-size: 2.5rem;
+    font-size: 3em;
+    text-align: center;
 }
 
 h3 {
     position: fixed;
+    top: 10rem;
     color: rgb(23, 26, 32);
     font-weight: 400;
-    margin-top: 12rem;
     line-height: 20px;
+    text-align: center;
 }
 
 .button_container {
@@ -129,5 +131,43 @@ a {
 
 a:hover {
     cursor: pointer;
+}
+
+@media (width < 768px) {
+
+    h1 {
+        margin-top: 0rem;
+        line-height: 1;
+
+    }
+
+    h3 {
+        margin-top: 2rem;
+    }
+
+    p {
+        bottom: 0.3rem;
+    }
+
+    .button_container {
+        gap: 0;
+        bottom: 1.5rem;
+        flex-direction: column;
+    }
+
+    span {
+        margin-bottom: 0.5rem;
+    }
+
+    footer {
+        margin: 0.2rem;
+        position: static;
+        width: 100%;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.482);
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+    }
 }
 </style>

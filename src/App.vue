@@ -6,15 +6,16 @@ import Header from './components/Header.vue';
 import Content from './components/Content.vue';
 
 const sections = ref([
-  { bg_image: "Model3_Desktop.jpg", headline: "Model 3", subText: "", bottomText: "" },
-  { bg_image: "ModelY_Desktop.jpg", headline: "Model Y", subText: "", bottomText: "Euro NCAP 5-Star Safety Rating" },
-  { bg_image: "ModelS_Desktop.jpg", headline: "Model S", subText: "", bottomText: "" },
-  { bg_image: "ModelX_Desktop.jpg", headline: "Model X", subText: "", bottomText: "" },
-  { bg_image: "Solar_Desktop.jpg", headline: "Solar and Powerwall", subText: "Power Everything", bottomText: "" }
+  { bg_image: "Model3_Desktop.jpg", bg_image_mobile: "Model3_Mobile.jpg", headline: "Model 3", subText: "", bottomText: "" },
+  { bg_image: "ModelY_Desktop.jpg", bg_image_mobile: "ModelY_Mobile.jpg", headline: "Model Y", subText: "", bottomText: "Euro NCAP 5-Star Safety Rating" },
+  { bg_image: "ModelS_Desktop.jpg", bg_image_mobile: "ModelS_Mobile.jpg", headline: "Model S", subText: "", bottomText: "" },
+  { bg_image: "ModelX_Desktop.jpg", bg_image_mobile: "ModelX_Mobile.jpg", headline: "Model X", subText: "", bottomText: "" },
+  { bg_image: "Solar_Desktop.jpg", bg_image_mobile: "Solar_Mobile.jpg", headline: "Solar and Powerwall", subText: "Power Everything", bottomText: "" }
 ])
 
 const sectionsContainer = ref(null);
 const content = ref(null);
+const useMobile = ref(false);
 
 function handleScroll() {
   const x = sectionsContainer?.value;
@@ -34,12 +35,38 @@ function handleScroll() {
     opacity = Math.abs(1 - y * 2);
     curSec = Math.ceil(curSec);
   }
-  content.value.update(sections.value[curSec].headline, sections.value[curSec].subText, opacity, sections.value[curSec].bottomText, curSec == sections.value.length - 1);
+
+  const data = {
+    text: sections.value[curSec].headline,
+    sText: sections.value[curSec].subText,
+    bText: sections.value[curSec].bottomText,
+    lSection: curSec == sections.value.length - 1,
+    opacity: opacity
+  }
+
+  content.value.update(data);
 }
 
 onMounted(() => {
-  content.value.update(sections.value[0].headline, sections.value[0].subText, 1.0, sections.value[0].bottomText, false);
+  const data = {
+    text: sections.value[0].headline,
+    sText: sections.value[0].subText,
+    bText: sections.value[0].bottomText,
+    lSection: false,
+    opacity: 1.0
+  }
+
+  content.value.update(data);
+
+  window.addEventListener('resize', onResize);
 })
+
+function onResize() {
+  //console.log(window.innerWidth + " : " + useMobile.value);
+  useMobile.value = window.innerWidth <= 768;
+}
+
+
 
 
 </script>
@@ -47,13 +74,15 @@ onMounted(() => {
 <template>
   <div class="main">
     <Header></Header>
-    <Content ref="content" :headline="sections[0].headline"></Content>
     <div class="sections" ref="sectionsContainer" @scroll="handleScroll">
-      <Section v-for="(item, index) in sections" :key="index" :bg_image="item.bg_image">
+      <Section v-if="useMobile" v-for="(item, index) in sections" :key="index" :bg_image="item.bg_image_mobile"></Section>
+
+
+      <Section v-else v-for="(item, index) in sections" :key="index + 1" :bg_image="item.bg_image">
       </Section>
     </div>
 
-
+    <Content ref="content" :headline="sections[0].headline"></Content>
   </div>
 </template>
 
