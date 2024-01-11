@@ -4,7 +4,7 @@ const props = defineProps(['bg_image'])
 </script>
 
 <template>
-    <section :style="{ backgroundImage: 'url(' + `src/assets/images/${bg_image}` + ')' }">
+    <section :style="{ backgroundImage: 'url(' + `${bg_image}` + ')' }">
     </section>
 </template>
 
